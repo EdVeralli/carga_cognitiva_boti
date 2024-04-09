@@ -14,6 +14,11 @@ import time
 
 os.chdir("C:/GCBA/carga_cognitiva_boti/data/")
 
+# Cargo en un df los unicodes de los emojis analizados en check_emojis.py
+df_emojis_unicode = pd.read_csv("emojis_unicode.csv", index_col=False)
+# paso los datos del df a una lista
+lista_emojis_unicode = df_emojis_unicode["Unicode"].tolist()
+
 df_tsv = pd.read_csv("rules-2024.04.04-12.19.tsv", sep='\t', encoding='latin1', on_bad_lines='warn', index_col=False)
 
 """
@@ -56,25 +61,34 @@ reemplazos = {'¿': ' ','?': ' ', '!': ' ', '¡': ' ','¡': ' ',',': ' ','.': ' 
 for buscar, reemplazar in reemplazos.items():
     df_tsv_limpio['Bot_Says2'] = df_tsv_limpio['Bot_Says2'].str.replace(buscar, reemplazar)
 
-"""
-Analizar como hago con los codigos de esta forma: \u2019
-"""
 
 
 # Agrego columna con la cantidad de palabras 
 df_tsv_limpio['cant_palabras'] = df_tsv_limpio['Bot_Says2'].str.split().apply(len)
 
 
+"""
+Analizar como hago con los codigos de esta forma: \u2019
+"""
 
+"""
+Analizo cuantas fila del tsv contienen alguno de los emojis en formato Unicode
+Recordar que solo se pueden procesar los emojis de 1 byte, los de 2 bytes fueron descartados
+en el proceso check_emojis.py
+"""
 
-# La Linea a continuacion NO funciona... tengo que usar un iterador
-#df_tsv_limpio['Bot_Says2'] = df_tsv_limpio['Bot Says'].replace('\\r\\n', '')
+# Inicializar una lista para almacenar los resultados
+resultados = []
 
-# for index, row in df_tsv_limpio.iterrows():
-#     linea = row['Bot Says'] 
-#     #print("\n",linea)
-#     linea2 = linea.replace('\\r\\n', ' ')
-#     #print("\n",linea2)  
-#     # Asign0 el nuevo valor a la columna 'Bot_Says2'
-#     df_tsv_limpio.at[index, 'Bot_Says2'] = linea2
-# 
+# Iterar sobre cada fila del DataFrame
+for indice, fila in df_tsv_limpio.iterrows():
+    # Dividir las palabras en la columna "Bot_Says2"
+    palabras = fila["Bot_Says2"].split()
+    # Verificar si algún elemento buscado está presente en las palabras
+    if any(elemento in palabras for elemento in lista_emojis_unicode):
+        # Si sí, agregar la fila al DataFrame de resultados
+        resultados.append(fila)
+
+# Crear un DataFrame con las filas donde hay algun emoji de la lista
+df_tsv_limpio_Solo_filas_con_Emojis = pd.DataFrame(resultados)
+
