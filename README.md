@@ -15,7 +15,7 @@ Filtro por Filas:	no null, no spaces, active TRUE
 **01_proceso1.ps1**
 	Script de PowerShell que transforma los unicodes graficos ( \u201c = Comilla doble que abre ) en caracteres ascii validos.    
  	Antes de ejecutar este script hay que habilitar el PowerShell en modo Administrador con el comando: `Set-ExecutionPolicy RemoteSigned`.    
- 	Luego se ejecuta: `.\proceso1.ps1` . Prestar atencion al Path que esta hardcodeado en el script.  
+ 	Luego se ejecuta: `.\proceso1.ps1` . Prestar atencion al nombre del TSV a procesar, esta hardcodeado en el script.  
 
 **02_Crea_CSV_Emojis_encontrados.py**
 	Crea un archivo *emojis_unicode_encontrados_TSV.csv* con los emojis de Paso 0 que fueron encontrados en el TSV . ( deberia dar vacios )

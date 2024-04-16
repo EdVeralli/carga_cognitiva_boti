@@ -12,7 +12,7 @@ import sys
 import pandas as pd
 import time
 
-os.chdir("C:/GCBA/carga_cognitiva_boti/data/")
+os.chdir("../data/")
 
 
 """

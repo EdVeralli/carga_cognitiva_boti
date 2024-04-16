@@ -1,5 +1,5 @@
-$archivo_original = "C:\GCBA\carga_cognitiva_boti\data\rules-2024.04.04-12.19.tsv"
-$archivo_modificado = "C:\GCBA\carga_cognitiva_boti\data\rules.tsv"
+$archivo_original = "..\data\rules-2024.04.04-12.19.tsv"
+$archivo_modificado = "..\data\rules.tsv"
 
 $contenido = Get-Content $archivo_original -Raw
 $diccionarioReemplazo = @{
